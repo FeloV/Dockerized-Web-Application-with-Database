@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks</title>
+    <style>
+        /* Basic table styling */
+        body{
+            background-color:#131313;
+
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid wheat;
+            padding: 8px;
+            text-align: center;
+            color: aliceblue;
+        }
+
+        th {
+            background-color:transparent;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Marks</h1>
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Student ID</th>
+                <th>Marks</th>
+            </tr>
+            <tr>
+                <td>John Doe</td>
+                <td>2021001</td>
+                <td>85</td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>2021002</td>
+                <td>92</td>
+            </tr>
+            <tr>
+                <td>Alice Johnson</td>
+                <td>2021003</td>
+                <td>78</td>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+
+    <script>
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'fetch_students.php', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const studentsData = JSON.parse(xhr.responseText);
+                populateTable(studentsData);
+            }
+        };
+        xhr.send();
+
+        function populateTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            let tableHTML = '';
+            data.forEach(student => {
+                tableHTML += `<tr>
+                                <td>${student.student_name}</td>
+                                <td>${student.student_id}</td>
+                                <td>${student.marks}</td>
+                              </tr>`;
+            });
+            tableBody.innerHTML = tableHTML;
+        }
+    </script>
+</body>
+</html>
